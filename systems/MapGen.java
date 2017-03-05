@@ -1,8 +1,6 @@
 package systems;
 
-import java.util.ArrayList;
 import java.util.Random;
-import components.Coord;
 import components.Level;
 
 public class MapGen {
@@ -17,7 +15,7 @@ public class MapGen {
 		int rW = randInt(5, 11);
 		int rH = randInt(5, 11);
 		int rX = 1;
-		int rY = (int)((width / 2) - (rH / 2));
+		int rY = (int)((height / 2) - (rH / 2));
 		addRoom(rX, rY, rW, rH);
 		int curRooms = 1;
 		int fail = 0, totalfail = 0;
@@ -25,7 +23,7 @@ public class MapGen {
 			int oldW = rW, oldH = rH, oldX = rX, oldY = rY, shiftX = randInt(1, 5), shiftY = randInt(1, 5);
 			rW = randInt(5, 11);
 			rH = randInt(5, 11);
-			int dir = randInt(1, 17);   // 1=SW 2=W 3=NW 4-5=S 6-7=N 8-10=SE 11-13=NE 14-17=E
+			int dir = randInt(1, 16);   // 1=SW 2=W 3=NW 4-5=S 6-7=N 8-10=SE 11-13=NE 14-17=E
 			switch(dir) {
 			case 1:   //sw
 				rX -= (shiftX + rW);
@@ -63,7 +61,12 @@ public class MapGen {
 				break;
 			}
 			if(rX < 0 || rY < 0 || rX + rW > width || rY + rH > height) {
+				rX = oldX;
+				rY = oldY;
+				rW = oldW;
+				rH = oldH;
 				fail++;
+				totalfail++;
 			} else {
 				if(addRoom(rX, rY, rW, rH)) {
 					int hX1 = oldX + oldW / 2;
@@ -114,9 +117,9 @@ public class MapGen {
 	}
 	
 	private static boolean addRoom(int X, int Y, int width, int height) {
-		for(int x = 0; x < width; x++) {
-			for(int y = 0; y < height; y++) {
-				if(!walkable[X + x][Y + y]) {
+		for(int x = 0; x < width - 1; x++) {
+			for(int y = 0; y < height - 1; y++) {
+				if(walkable[X + x][Y + y]) {
 					return false;
 				}
 			}
@@ -131,29 +134,26 @@ public class MapGen {
 	}
 
 	private static void addHallway(int x1, int y1, int x2, int y2) {
-		boolean wide = rng.nextBoolean();
-		boolean up = y1 > y2 ? true : false;
-		boolean left = x1 > x2 ? true : false;
-		ArrayList<Coord> line = BresenhamLineAlgo.getLine(x1, y1, x2, y2);
-		for(Coord coord : line) {
-			transparent[coord.X][coord.Y] = true;
-			walkable[coord.X][coord.Y] = true;
-			if(wide) {
-				if(Math.abs(x1 - x2) > Math.abs(y1 - y2)) {
-					if(up) {
-						coord.Y--;
-					} else {
-						coord.Y++;
-					}
-				} else {
-					if(left) {
-						coord.X--;
-					} else {
-						coord.X++;
-					}
-				}
-				transparent[coord.X][coord.Y] = true;
-				walkable[coord.X][coord.Y] = true;
+		if(x1 < x2) {
+			for(int x = x1; x <= x2; x++) {
+				transparent[x][y1] = true;
+				walkable[x][y1] = true;
+			}
+		} else {
+			for(int x = x1; x >= x2; x--) {
+				transparent[x][y1] = true;
+				walkable[x][y1] = true;
+			}
+		}
+		if(y1 < y2) {
+			for(int y = y1; y <= y2; y++) {
+				transparent[x2][y] = true;
+				walkable[x2][y] = true;
+			}
+		} else {
+			for(int y = y1; y >= y2; y--) {
+				transparent[x2][y] = true;
+				walkable[x2][y] = true;
 			}
 		}
 	}

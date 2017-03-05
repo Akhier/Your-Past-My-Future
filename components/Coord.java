@@ -5,4 +5,9 @@ public class Coord {
 		X = x;
 		Y = y;
 	}
+
+	@Override
+	public String toString() {
+		return "X: " + X + " Y: " + Y;
+	}
 }
