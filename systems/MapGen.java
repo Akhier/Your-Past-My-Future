@@ -1,13 +1,13 @@
 package systems;
 
 import java.util.Random;
-import components.Level;
+import components.MapLevel;
 
 public class MapGen {
 	private static Random rng;
 	private static boolean[][] transparent, walkable;
 
-	public static Level makeMap(int width, int height, int seed) {
+	public static MapLevel makeMap(int width, int height, int seed) {
 		rng = new Random(seed);
 		transparent = new boolean[width][height];
 		walkable = new boolean[width][height];
@@ -103,7 +103,7 @@ public class MapGen {
 			}
 		}
 
-		Level output = new Level(width, height);
+		MapLevel output = new MapLevel(width, height);
 		for(int x = 0; x < width; x++) {
 			for(int y = 0; y < height; y++) {
 				output.setTile(x, y, transparent[x][y], walkable[x][y]);

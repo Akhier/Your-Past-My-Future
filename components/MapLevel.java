@@ -1,8 +1,8 @@
 package components;
-public class Level {
+public class MapLevel {
 	private int width, height;
 	private boolean[][] transparent, walkable;
-	public Level(int width, int height) {
+	public MapLevel(int width, int height) {
 		this.width = width;
 		this.height = height;
 		transparent = new boolean[width][height];
