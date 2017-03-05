@@ -1,3 +1,8 @@
+/**
+ * @author Akhier Dragonheart
+ * @version 1.0
+ */
+
 import java.util.HashMap;
 
 public class ComponentManager {
