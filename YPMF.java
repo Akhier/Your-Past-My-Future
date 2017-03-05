@@ -4,7 +4,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import screens.Screen;
 import screens.StartScreen;
-
+/**
+ * @author Akhier Dragonheart
+ * @version 0.1
+ */
 public class YPMF extends JFrame implements KeyListener{
 	private static final long serialVersionUID = 23015753830142527L;
 
