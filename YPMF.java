@@ -16,7 +16,7 @@ public class YPMF extends JFrame implements KeyListener{
 
 	public YPMF() {
 		super();
-		terminal = new AsciiPanel();
+		terminal = new AsciiPanel(80, 24);
 		add(terminal);
 		pack();
 		screen = new StartScreen();
