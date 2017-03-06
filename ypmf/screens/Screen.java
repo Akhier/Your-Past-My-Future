@@ -1,4 +1,4 @@
-package screens;
+package ypmf.screens;
 
 import java.awt.event.KeyEvent;
 import asciiPanel.AsciiPanel;

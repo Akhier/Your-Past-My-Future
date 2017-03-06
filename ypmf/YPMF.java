@@ -1,12 +1,14 @@
+package ypmf;
+
 import javax.swing.JFrame;
 import asciiPanel.AsciiPanel;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import screens.Screen;
-import screens.StartScreen;
+import ypmf.screens.Screen;
+import ypmf.screens.StartScreen;
 /**
  * @author Akhier Dragonheart
- * @version 0.1
+ * @version 0.2
  */
 public class YPMF extends JFrame implements KeyListener{
 	private static final long serialVersionUID = 23015753830142527L;
@@ -16,7 +18,7 @@ public class YPMF extends JFrame implements KeyListener{
 
 	public YPMF() {
 		super();
-		terminal = new AsciiPanel(80, 24);
+		terminal = new AsciiPanel();
 		add(terminal);
 		pack();
 		screen = new StartScreen();

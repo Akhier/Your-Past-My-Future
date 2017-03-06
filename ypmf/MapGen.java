@@ -1,7 +1,6 @@
-package systems;
+package ypmf;
 
 import java.util.Random;
-import components.MapLevel;
 
 public class MapGen {
 	private static Random rng;

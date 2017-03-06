@@ -1,13 +1,13 @@
-package screens;
+package ypmf.screens;
 
 import java.awt.event.KeyEvent;
 import asciiPanel.AsciiPanel;
 
-public class StartScreen implements Screen {
+public class WinScreen implements Screen {
 	@Override
 	public void displayOutput(AsciiPanel terminal) {
-		terminal.writeCenter("Your Past, My Future", 1);
-		terminal.writeCenter("Temp but press [enter] to \"start\"", 22);
+		terminal.write("You won.", 1, 1);
+		terminal.writeCenter("-- press [enter] to restart --", 22);
 	}
 
 	@Override
