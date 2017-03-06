@@ -26,7 +26,7 @@ public abstract class TargetBasedScreen implements Screen {
 			}
 			terminal.write('*', p.x, p.y, AsciiPanel.brightMagenta);
 		}
-		terminal.clear();
+		terminal.clear(' ', 0, 23, 80, 1);
 		terminal.write(caption, 0, 23);
 	}
 
