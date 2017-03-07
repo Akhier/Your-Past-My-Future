@@ -7,6 +7,7 @@ import java.util.List;
 import asciiPanel.AsciiPanel;
 import ypmf.Creature;
 import ypmf.Item;
+import ypmf.MapGen;
 import ypmf.StuffFactory;
 import ypmf.FieldOfView;
 import ypmf.Tile;
@@ -68,7 +69,7 @@ public class PlayScreen implements Screen {
 	}
 
 	private void createWorld() {
-		world = new WorldBuilder(90, 32, 5).makeCaves().build();
+		world = MapGen.makeLevels(90, 32, 5, 222);
 	}
 
 	public int getScrollX() { return Math.max(0, Math.min(player.x - screenWidth / 2, world.width() - screenWidth)); }
