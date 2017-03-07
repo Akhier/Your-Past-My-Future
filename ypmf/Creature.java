@@ -44,12 +44,6 @@ public class Creature {
 	private String name;
 	public String name() { return name; }
 
-	private int maxFood;
-	public int maxFood() { return maxFood; }
-	
-	private int food;
-	public int food() { return food; }
-	
 	private int xp;
 	public int xp() { return xp; }
 	public void modifyXp(int amount) { 
@@ -98,8 +92,6 @@ public class Creature {
 		this.defenseValue = defense;
 		this.visionRadius = 9;
 		this.name = name;
-		this.maxFood = 1000;
-		this.food = maxFood / 3 * 2;
 		this.level = 1;
 		this.regenHpPer1000 = 10;
 		this.effects = new ArrayList<Effect>();
@@ -155,7 +147,6 @@ public class Creature {
 
 		Tile tile = world.tile(gx, gy, gz);
 		Creature other = world.creature(gx, gy, gz);
-		modifyFood(-1);
 		
 		if (other == null) {
 			ai.onEnter(gx, gy, gz, tile);
@@ -169,7 +160,6 @@ public class Creature {
 	}
 
 	private void commonAttack(Creature other, int attack, String action, Object ... params) {
-		modifyFood(-2);
 		int amount = Math.max(0, attack - other.defenseValue());
 		amount = (int)(Math.random() * amount) + 1;
 		Object[] params2 = new Object[params.length+1];
@@ -203,14 +193,7 @@ public class Creature {
 		}
 	}
 	
-	public void dig(int wx, int wy, int wz) {
-		modifyFood(-10);
-		world.dig(wx, wy, wz);
-		doAction("dig");
-	}
-	
 	public void update(){
-		modifyFood(-1);
 		regenerateHealth();
 		regenerateMana();
 		updateEffects();
@@ -234,7 +217,6 @@ public class Creature {
 		if (regenHpCooldown < 0){
 			if (hp < maxHp){
 				modifyHp(1, "Died from regenerating health?");
-				modifyFood(-1);
 			}
 			regenHpCooldown += 1000;
 		}
@@ -245,7 +227,6 @@ public class Creature {
 		if (regenManaCooldown < 0){
 			if (mana < maxMana) {
 				modifyMana(1);
-				modifyFood(-1);
 			}
 			regenManaCooldown += 1000;
 		}
@@ -319,18 +300,6 @@ public class Creature {
 			return world.creature(wx, wy, wz);
 		} else {
 			return null;
-		}
-	}
-	
-	public void modifyFood(int amount) { 
-		food += amount;
-		if (food > maxFood) {
-			maxFood = (maxFood + food) / 2;
-			food = maxFood;
-			notify("You can't belive your stomach can hold that much!");
-			modifyHp(-1, "Killed by overeating.");
-		} else if (food < 1 && isPlayer()) {
-			modifyHp(-1000, "Starved to death.");
 		}
 	}
 	
