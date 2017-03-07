@@ -12,7 +12,6 @@ import ypmf.StuffFactory;
 import ypmf.FieldOfView;
 import ypmf.Tile;
 import ypmf.World;
-import ypmf.WorldBuilder;
 
 public class PlayScreen implements Screen {
 	private World world;
@@ -136,30 +135,38 @@ public class PlayScreen implements Screen {
 			switch (key.getKeyCode()){
 			case KeyEvent.VK_LEFT:
 			case KeyEvent.VK_H:
+			case KeyEvent.VK_NUMPAD4:
 				player.moveBy(-1, 0, 0);
 				break;
 			case KeyEvent.VK_RIGHT:
 			case KeyEvent.VK_L:
+			case KeyEvent.VK_NUMPAD6:
 				player.moveBy( 1, 0, 0);
 				break;
 			case KeyEvent.VK_UP:
 			case KeyEvent.VK_K:
+			case KeyEvent.VK_NUMPAD8:
 				player.moveBy( 0,-1, 0);
 				break;
 			case KeyEvent.VK_DOWN:
 			case KeyEvent.VK_J:
+			case KeyEvent.VK_NUMPAD2:
 				player.moveBy( 0, 1, 0);
 				break;
 			case KeyEvent.VK_Y:
+			case KeyEvent.VK_NUMPAD7:
 				player.moveBy(-1,-1, 0);
 				break;
 			case KeyEvent.VK_U:
+			case KeyEvent.VK_NUMPAD9:
 				player.moveBy( 1,-1, 0);
 				break;
 			case KeyEvent.VK_B:
+			case KeyEvent.VK_NUMPAD1:
 				player.moveBy(-1, 1, 0);
 				break;
 			case KeyEvent.VK_N:
+			case KeyEvent.VK_NUMPAD3:
 				player.moveBy( 1, 1, 0);
 				break;
 			case KeyEvent.VK_D:
