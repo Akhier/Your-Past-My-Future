@@ -68,7 +68,7 @@ public class PlayScreen implements Screen {
 	}
 
 	private void createWorld() {
-		world = MapGen.makeLevels(90, 32, 5, 222);
+		world = MapGen.makeLevels(200, 32, 3, 222);
 	}
 
 	public int getScrollX() { return Math.max(0, Math.min(player.x - screenWidth / 2, world.width() - screenWidth)); }

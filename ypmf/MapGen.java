@@ -10,7 +10,7 @@ public class MapGen {
 		rng = new Random(seed);
 		walkable = new boolean[width][height][depth];
 		for(int z = 0; z < depth; z++) {
-			int maxRooms = 200;
+			int maxRooms = 1000;
 			int rW = randInt(5, 11);
 			int rH = randInt(5, 11);
 			int rX = 1;
@@ -22,36 +22,39 @@ public class MapGen {
 				int oldW = rW, oldH = rH, oldX = rX, oldY = rY, shiftX = randInt(1, 5), shiftY = randInt(1, 5);
 				rW = randInt(5, 11);
 				rH = randInt(5, 11);
-				int dir = randInt(1, 16);   // 1=SW 2=W 3=NW 4-5=S 6-7=N 8-10=SE 11-13=NE 14-17=E
+				int dir = randInt(1, 17);   // 1=SW 2=W 3=NW 4=S 5=N 6-7=SE 8-9=NE 10-12=E
 				switch(dir) {
-				case 1:   //sw
+				case 1:
+				case 2:
+				case 3:   //sw
 					rX -= (shiftX + rW);
 					rY += (shiftY + oldH);
-					break;
-				case 2:   //w
-					rX -= (shiftX + rW);
-					break;
-				case 3:   //nw
-					rX -= (shiftX + rW);
-					rY -= (shiftY + rH);
 					break;
 				case 4:
-				case 5:   //s
-					rY += (shiftY + oldH);
-					break;
+				case 5:
 				case 6:
-				case 7:   //n
-					rY -= (shiftY + rH);
+				case 7:   //w
+					rX -= (shiftX + rW);
 					break;
 				case 8:
 				case 9:
-				case 10:   //se
+				case 10:   //nw
+					rX -= (shiftX + rW);
+					rY -= (shiftY + rH);
+					break;
+				case 11:
+				case 12:   //s
+					rY += (shiftY + oldH);
+					break;
+				case 13:
+				case 14:   //n
+					rY -= (shiftY + rH);
+					break;
+				case 15:   //se
 					rX += (shiftX + oldW);
 					rY += (shiftY + oldH);
 					break;
-				case 11:
-				case 12:
-				case 13:   //ne
+				case 16:   //ne
 					rX += (shiftX + oldW);
 					rY -= (shiftY + rH);
 					break;
