@@ -93,7 +93,6 @@ public class PlayScreen implements Screen {
 
 	@Override
 	public Screen respondToUserInput(KeyEvent key) {
-		int level = player.level();
 		if(subscreen != null) {
 			subscreen = subscreen.respondToUserInput(key);
 		} else {
@@ -154,9 +153,6 @@ public class PlayScreen implements Screen {
 				subscreen = new HelpScreen();
 				break;
 			}
-		}
-		if(player.level() > level) {
-			subscreen = new LevelUpScreen(player, player.level() - level);
 		}
 		if(subscreen == null) {
 			world.update();

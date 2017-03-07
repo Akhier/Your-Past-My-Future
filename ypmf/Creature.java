@@ -44,22 +44,6 @@ public class Creature {
 	private String name;
 	public String name() { return name; }
 
-	private int xp;
-	public int xp() { return xp; }
-	public void modifyXp(int amount) { 
-		xp += amount;
-		notify("You %s %d xp.", amount < 0 ? "lose" : "gain", amount);
-		while (xp > (int)(Math.pow(level, 1.75) * 25)) {
-			level++;
-			doAction("advance to level %d", level);
-			ai.onGainLevel();
-			modifyHp(level * 2, "Died from having a negative level?");
-		}
-	}
-	
-	private int level;
-	public int level() { return level; }
-	
 	private int regenHpCooldown;
 	private int regenHpPer1000;
 	public void modifyRegenHpPer1000(int amount) { regenHpPer1000 += amount; }
@@ -92,7 +76,6 @@ public class Creature {
 		this.defenseValue = defense;
 		this.visionRadius = 9;
 		this.name = name;
-		this.level = 1;
 		this.regenHpPer1000 = 10;
 		this.effects = new ArrayList<Effect>();
 		this.maxMana = 5;
@@ -169,19 +152,8 @@ public class Creature {
 		params2[params2.length - 1] = amount;
 		doAction(action, params2);
 		other.modifyHp(-amount, "Killed by a " + name);
-		if (other.hp < 1) {
-			gainXp(other);
-		}
 	}
 	
-	public void gainXp(Creature other){
-		int amount = other.maxHp + other.attackValue() + other.defenseValue() - level;
-		
-		if (amount > 0) {
-			modifyXp(amount);
-		}
-	}
-
 	public void modifyHp(int amount, String causeOfDeath) { 
 		hp += amount;
 		this.causeOfDeath = causeOfDeath;
@@ -316,7 +288,7 @@ public class Creature {
 	}
 	
 	public String details() {
-		return String.format("  level:%d  attack:%d  defense:%d  hp:%d", level, attackValue(), defenseValue(), hp);
+		return String.format("  attack:%d  defense:%d  hp:%d", attackValue(), defenseValue(), hp);
 	}
 	
 	public void summon(Creature other) {
