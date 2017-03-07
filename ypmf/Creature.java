@@ -28,13 +28,13 @@ public class Creature {
 	private int attackValue;
 	public void modifyAttackValue(int value) { attackValue += value; }
 	public int attackValue() { 
-		return attackValue + (weapon == null ? 0 : weapon.attackValue()) + (armor == null ? 0 : armor.attackValue());
+		return attackValue;
 	}
 
 	private int defenseValue;
 	public void modifyDefenseValue(int value) { defenseValue += value; }
 	public int defenseValue() { 
-		return defenseValue + (weapon == null ? 0 : weapon.defenseValue()) + (armor == null ? 0 : armor.defenseValue());
+		return defenseValue;
 	}
 
 	private int visionRadius;
@@ -44,20 +44,11 @@ public class Creature {
 	private String name;
 	public String name() { return name; }
 
-	private Inventory inventory;
-	public Inventory inventory() { return inventory; }
-
 	private int maxFood;
 	public int maxFood() { return maxFood; }
 	
 	private int food;
 	public int food() { return food; }
-	
-	private Item weapon;
-	public Item weapon() { return weapon; }
-	
-	private Item armor;
-	public Item armor() { return armor; }
 	
 	private int xp;
 	public int xp() { return xp; }
@@ -107,7 +98,6 @@ public class Creature {
 		this.defenseValue = defense;
 		this.visionRadius = 9;
 		this.name = name;
-		this.inventory = new Inventory(20);
 		this.maxFood = 1000;
 		this.food = maxFood / 3 * 2;
 		this.level = 1;
@@ -178,15 +168,6 @@ public class Creature {
 		commonAttack(other, attackValue(), "attack the %s for %d damage", other.name);
 	}
 
-	private void throwAttack(Item item, Creature other) {
-		commonAttack(other, attackValue / 2 + item.thrownAttackValue(), "throw a %s at the %s for %d damage", nameOf(item), other.name);
-		other.addEffect(item.quaffEffect());
-	}
-	
-	public void rangedWeaponAttack(Creature other){
-		commonAttack(other, attackValue / 2 + weapon.rangedAttackValue(), "fire a %s at the %s for %d damage", nameOf(weapon), other.name);
-	}
-	
 	private void commonAttack(Creature other, int attack, String action, Object ... params) {
 		modifyFood(-2);
 		int amount = Math.max(0, attack - other.defenseValue());
@@ -218,19 +199,7 @@ public class Creature {
 			hp = maxHp;
 		} else if (hp < 1) {
 			doAction("die");
-			leaveCorpse();
 			world.remove(this);
-		}
-	}
-	
-	private void leaveCorpse(){
-		Item corpse = new Item('%', color, name + " corpse", null);
-		corpse.modifyFoodValue(maxHp * 5);
-		world.addAtEmptySpace(corpse, x, y, z);
-		for (Item item : inventory.getItems()){
-			if (item != null) {
-				drop(item);
-			}
 		}
 	}
 	
@@ -300,20 +269,6 @@ public class Creature {
 		}
 	}
 	
-	public void doAction(Item item, String message, Object ... params){
-		if (hp < 1) {
-			return;
-		}
-		for (Creature other : getCreaturesWhoSeeMe()){
-			if (other == this){
-				other.notify("You " + message + ".", params);
-			} else {
-				other.notify(String.format("The %s %s.", name, makeSecondPerson(message)), params);
-			}
-			other.learnName(item);
-		}
-	}
-	
 	private List<Creature> getCreaturesWhoSeeMe(){
 		List<Creature> others = new ArrayList<Creature>();
 		int r = 9;
@@ -367,27 +322,6 @@ public class Creature {
 		}
 	}
 	
-	public void pickup(){
-		Item item = world.item(x, y, z);
-		if (inventory.isFull() || item == null){
-			doAction("grab at the ground");
-		} else {
-			doAction("pickup a %s", nameOf(item));
-			world.remove(x, y, z);
-			inventory.add(item);
-		}
-	}
-	
-	public void drop(Item item){
-		if (world.addAtEmptySpace(item, x, y, z)){
-			doAction("drop a " + nameOf(item));
-			inventory.remove(item);
-			unequip(item);
-		} else {
-			notify("There's nowhere to drop the %s.", nameOf(item));
-		}
-	}
-	
 	public void modifyFood(int amount) { 
 		food += amount;
 		if (food > maxFood) {
@@ -404,25 +338,6 @@ public class Creature {
 		return glyph == '@';
 	}
 	
-	public void eat(Item item){
-		doAction("eat a " + nameOf(item));
-		consume(item);
-	}
-	
-	public void quaff(Item item){
-		doAction("quaff a " + nameOf(item));
-		consume(item);
-	}
-	
-	private void consume(Item item){
-		if (item.foodValue() < 0) {
-			notify("Gross!");
-		}
-		addEffect(item.quaffEffect());
-		modifyFood(item.foodValue());
-		getRidOf(item);
-	}
-	
 	private void addEffect(Effect effect){
 		if (effect == null) {
 			return;
@@ -431,90 +346,8 @@ public class Creature {
 		effects.add(effect);
 	}
 	
-	private void getRidOf(Item item){
-		inventory.remove(item);
-		unequip(item);
-	}
-	
-	private void putAt(Item item, int wx, int wy, int wz){
-		inventory.remove(item);
-		unequip(item);
-		world.addAtEmptySpace(item, wx, wy, wz);
-	}
-	
-	public void unequip(Item item){
-		if (item == null) {
-			return;
-		}
-		if (item == armor){
-			if (hp > 0)
-				doAction("remove a " + nameOf(item));
-			armor = null;
-		} else if (item == weapon) {
-			if (hp > 0) 
-				doAction("put away a " + nameOf(item));
-			weapon = null;
-		}
-	}
-	
-	public void equip(Item item){
-		if (!inventory.contains(item)) {
-			if (inventory.isFull()) {
-				notify("Can't equip %s since you're holding too much stuff.", nameOf(item));
-				return;
-			} else {
-				world.remove(item);
-				inventory.add(item);
-			}
-		}
-		
-		if (item.attackValue() == 0 && item.rangedAttackValue() == 0 && item.defenseValue() == 0) {
-			return;
-		}
-		if (item.attackValue() + item.rangedAttackValue() >= item.defenseValue()){
-			unequip(weapon);
-			doAction("wield a " + nameOf(item));
-			weapon = item;
-		} else {
-			unequip(armor);
-			doAction("put on a " + nameOf(item));
-			armor = item;
-		}
-	}
-	
-	public Item item(int wx, int wy, int wz) {
-		if (canSee(wx, wy, wz)) {
-			return world.item(wx, wy, wz);
-		} else {
-			return null;
-		}
-	}
-	
 	public String details() {
 		return String.format("  level:%d  attack:%d  defense:%d  hp:%d", level, attackValue(), defenseValue(), hp);
-	}
-	
-	public void throwItem(Item item, int wx, int wy, int wz) {
-		Point end = new Point(x, y, 0);
-		for (Point p : new Line(x, y, wx, wy)){
-			if (!realTile(p.x, p.y, z).isGround()) {
-				break;
-			}
-			end = p;
-		}
-		wx = end.x;
-		wy = end.y;
-		Creature c = creature(wx, wy, wz);
-		if (c != null) {
-			throwAttack(item, c);				
-		} else {
-			doAction("throw a %s", nameOf(item));
-		}
-		if (item.quaffEffect() != null && c != null) {
-			getRidOf(item);
-		} else {
-			putAt(item, wx, wy, wz);
-		}
 	}
 	
 	public void summon(Creature other) {
@@ -537,12 +370,4 @@ public class Creature {
 		modifyMana(-spell.manaCost());
 	}
 	
-	public String nameOf(Item item){
-		return ai.getName(item);
-	}
-	
-	public void learnName(Item item){
-		notify("The " + item.appearance() + " is a " + item.name() + "!");
-		ai.setName(item, item.name());
-	}
 }

@@ -1,7 +1,6 @@
 package ypmf.screens;
 
 import ypmf.Creature;
-import ypmf.Item;
 import ypmf.Tile;
 
 public class LookScreen extends TargetBasedScreen {
@@ -16,11 +15,6 @@ public class LookScreen extends TargetBasedScreen {
 			return;
 		}
 
-		Item item = player.item(x, y, player.z);
-		if(item != null) {
-			caption = item.glyph() + " " + player.nameOf(item) + item.details();
-			return;
-		}
 		Tile tile = player.tile(x, y, player.z);
 		caption = tile.glyph() + " " + tile.details();
 	}

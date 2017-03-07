@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import asciiPanel.AsciiPanel;
 import ypmf.Creature;
-import ypmf.Item;
 import ypmf.MapGen;
 import ypmf.StuffFactory;
 import ypmf.FieldOfView;
@@ -29,7 +28,6 @@ public class PlayScreen implements Screen {
 		fov = new FieldOfView(world);
 		StuffFactory factory = new StuffFactory(world);
 		createCreatures(factory);
-		createItems(factory);
 	}
 
 	private void createCreatures(StuffFactory factory) {
@@ -46,25 +44,6 @@ public class PlayScreen implements Screen {
 				factory.newGoblin(z, player);
 			}
 		}
-	}
-
-	private void createItems(StuffFactory factory) {
-		for(int z = 0; z < world.depth(); z++) {
-			for(int i = 0; i < world.width() * world.height() / 50; i++) {
-				factory.newRock(z);
-			}
-			factory.newFruit(z);
-			factory.newEdibleWeapon(z);
-			factory.newBread(z);
-			factory.randomArmor(z);
-			factory.randomWeapon(z);
-			factory.randomWeapon(z);
-			for(int i = 0; i < z + 1; i++) {
-				factory.randomPotion(z);
-				factory.randomSpellBook(z);
-			}
-		}
-		factory.newVictoryItem(world.depth() - 1);
 	}
 
 	private void createWorld() {
@@ -169,44 +148,12 @@ public class PlayScreen implements Screen {
 			case KeyEvent.VK_NUMPAD3:
 				player.moveBy( 1, 1, 0);
 				break;
-			case KeyEvent.VK_D:
-				subscreen = new DropScreen(player);
-				break;
-			case KeyEvent.VK_E:
-				subscreen = new EatScreen(player);
-				break;
-			case KeyEvent.VK_W:
-				subscreen = new EquipScreen(player);
-				break;
-			case KeyEvent.VK_X:
-				subscreen = new ExamineScreen(player);
-				break;
 			case KeyEvent.VK_SEMICOLON:
 				subscreen = new LookScreen(player, "Looking", player.x - getScrollX(), player.y - getScrollY());
-				break;
-			case KeyEvent.VK_T:
-				subscreen = new ThrowScreen(player, player.x - getScrollX(), player.y - getScrollY());
-				break;
-			case KeyEvent.VK_F: 
-				if (player.weapon() == null || player.weapon().rangedAttackValue() == 0) {
-					player.notify("You don't have a ranged weapon equiped.");
-				} else {
-					subscreen = new FireWeaponScreen(player, player.x - getScrollX(), player.y - getScrollY());
-					break;
-				}
-			case KeyEvent.VK_Q:
-				subscreen = new QuaffScreen(player);
-				break;
-			case KeyEvent.VK_R:
-				subscreen = new ReadScreen(player, player.x - getScrollX(), player.y - getScrollY());
 				break;
 			}
 			
 			switch (key.getKeyChar()){
-			case 'g':
-			case ',':
-				player.pickup();
-				break;
 			case '<': 
 				if (userIsTryingToExit()) {
 					return userExits();
@@ -239,11 +186,6 @@ public class PlayScreen implements Screen {
 	}
 
 	private Screen userExits() {
-		for (Item item : player.inventory().getItems()) {
-			if(item != null && item.name().equals("teddy bear")) {
-				return new WinScreen();
-			}
-		}
 		player.modifyHp(0, "Died while cowardly fleeing the caves.");
 		return new LoseScreen(player);
 	}
