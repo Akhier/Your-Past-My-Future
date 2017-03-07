@@ -85,6 +85,26 @@ public class World {
 		creature.z = z;
 		creatures.add(creature);
 	}
+
+	public void addAtStartingStairs(Creature creature) {
+		int x = 0, y = 0;
+		for(int lx = 0; lx < width; lx++) {
+			for(int ly = 0; ly < height; ly++) {
+				boolean done = false;
+				if(tile(lx, ly, 0) == Tile.STAIRS_UP) {
+					x = lx;
+					y = ly;
+					done = true;
+					break;
+				}
+				if(done) { break; }
+			}
+		}
+		creature.x = x;
+		creature.y = y;
+		creature.z = 0;
+		creatures.add(creature);
+	}
 	
 	public void update(){
 		List<Creature> toUpdate = new ArrayList<Creature>(creatures);

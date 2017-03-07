@@ -122,28 +122,53 @@ public class Creature {
 		if (mx==0 && my==0 && mz==0) {
 			return;
 		}
-		Tile tile = world.tile(x+mx, y+my, z+mz);
+		int gx = x + mx, gy = y + my, gz = z + mz;
 		if (mz == -1){
-			if (tile == Tile.STAIRS_DOWN) {
+			if (world.tile(x, y, z) == Tile.STAIRS_UP) {
 				doAction("walk up the stairs to level %d", z+mz+1);
+				for(int lx = 0; lx < world.width(); lx++) {
+					for(int ly = 0; ly < world.height(); ly++) {
+						boolean done = false;
+						if(world.tile(lx, ly, gz) == Tile.STAIRS_DOWN) {
+							gx = lx;
+							gy = ly;
+							done = true;
+							break;
+						}
+						if(done) { break; }
+					}
+				}
 			} else {
 				doAction("try to go up but are stopped by the cave ceiling");
 				return;
 			}
 		} else if (mz == 1){
-			if (tile == Tile.STAIRS_UP) {
+			if (world.tile(x, y, z) == Tile.STAIRS_DOWN) {
 				doAction("walk down the stairs to level %d", z+mz+1);
+				for(int lx = 0; lx < world.width(); lx++) {
+					for(int ly = 0; ly < world.height(); ly++) {
+						boolean done = false;
+						if(world.tile(lx, ly, gz) == Tile.STAIRS_UP) {
+							gx = lx;
+							gy = ly;
+							done = true;
+							break;
+						}
+						if(done) { break; }
+					}
+				}
 			} else {
 				doAction("try to go down but are stopped by the cave floor");
 				return;
 			}
 		}
-		
-		Creature other = world.creature(x+mx, y+my, z+mz);
+
+		Tile tile = world.tile(gx, gy, gz);
+		Creature other = world.creature(gx, gy, gz);
 		modifyFood(-1);
 		
 		if (other == null) {
-			ai.onEnter(x+mx, y+my, z+mz, tile);
+			ai.onEnter(gx, gy, gz, tile);
 		} else {
 			meleeAttack(other);
 		}

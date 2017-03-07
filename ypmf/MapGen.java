@@ -10,7 +10,6 @@ public class MapGen {
 		rng = new Random(seed);
 		walkable = new boolean[width][height][depth];
 		for(int z = 0; z < depth; z++) {
-			System.out.println(z);
 			int maxRooms = 200;
 			int rW = randInt(5, 11);
 			int rH = randInt(5, 11);
@@ -126,7 +125,8 @@ public class MapGen {
 				}
 			}
 		}
-		return new World(tiles);
+		World output = new World(tiles);
+		return output;
 	}
 
 	private static int randInt(int min, int max) {
