@@ -10,36 +10,46 @@ public class StuffFactory {
 		this.world = world;
 	}
 	
-	public Creature newPlayer(List<String> messages, FieldOfView fov){
-		Creature player = new Creature(world, '@', AsciiPanel.brightWhite, "player", 100, 20, 5);
+	public Creature newPlayer(List<String> messages, FieldOfView fov, int playerclass){
+		System.out.println(playerclass);
+		Creature player;
+		if(playerclass == 0) {
+			player = new Creature(world, '@', AsciiPanel.brightYellow, "player", 120, 30, 5, 5);
+		} else if (playerclass == 1) {
+			player = new Creature(world, '@', AsciiPanel.brightCyan, "player", 80, 25, 5, 10);
+		} else if (playerclass == 2) {
+			player = new Creature(world, '@', AsciiPanel.brightRed, "player", 100, 20, 5, 15);
+		} else {
+			player = new Creature(world, '#', AsciiPanel.magenta, "ERROR", 0, 0, 0, 0);
+		}
 		world.addAtStartingStairs(player);
 		new PlayerAi(player, messages, fov);
 		return player;
 	}
 	
 	public Creature newFungus(int depth){
-		Creature fungus = new Creature(world, 'f', AsciiPanel.green, "fungus", 10, 0, 0);
+		Creature fungus = new Creature(world, 'f', AsciiPanel.green, "fungus", 10, 0, 0, 0);
 		world.addAtEmptyLocation(fungus, depth);
 		new FungusAi(fungus, this);
 		return fungus;
 	}
 	
 	public Creature newBat(int depth){
-		Creature bat = new Creature(world, 'b', AsciiPanel.brightYellow, "bat", 15, 5, 0);
+		Creature bat = new Creature(world, 'b', AsciiPanel.brightYellow, "bat", 15, 5, 0, 0);
 		world.addAtEmptyLocation(bat, depth);
 		new BatAi(bat);
 		return bat;
 	}
 	
 	public Creature newZombie(int depth, Creature player){
-		Creature zombie = new Creature(world, 'z', AsciiPanel.white, "zombie", 50, 10, 10);
+		Creature zombie = new Creature(world, 'z', AsciiPanel.white, "zombie", 50, 10, 10, 10);
 		world.addAtEmptyLocation(zombie, depth);
 		new ZombieAi(zombie, player);
 		return zombie;
 	}
 
 	public Creature newGoblin(int depth, Creature player){
-		Creature goblin = new Creature(world, 'g', AsciiPanel.brightGreen, "goblin", 66, 15, 5);
+		Creature goblin = new Creature(world, 'g', AsciiPanel.brightGreen, "goblin", 66, 15, 5, 5);
 		new GoblinAi(goblin, player);
 		world.addAtEmptyLocation(goblin, depth);
 		return goblin;

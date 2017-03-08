@@ -66,7 +66,7 @@ public class Creature {
 	private String causeOfDeath;
 	public String causeOfDeath() { return causeOfDeath; }
 	
-	public Creature(World world, char glyph, Color color, String name, int maxHp, int attack, int defense){
+	public Creature(World world, char glyph, Color color, String name, int maxHp, int attack, int defense, int mana){
 		this.world = world;
 		this.glyph = glyph;
 		this.color = color;
@@ -78,7 +78,7 @@ public class Creature {
 		this.name = name;
 		this.regenHpPer1000 = 10;
 		this.effects = new ArrayList<Effect>();
-		this.maxMana = 5;
+		this.maxMana = mana;
 		this.mana = maxMana;
 		this.regenManaPer1000 = 20;
 	}

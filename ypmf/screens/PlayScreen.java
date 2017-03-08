@@ -20,18 +20,18 @@ public class PlayScreen implements Screen {
 	private FieldOfView fov;
 	private Screen subscreen;
 
-	public PlayScreen() {
+	public PlayScreen(int playerclass) {
 		screenWidth = 80;
 		screenHeight = 23;
 		messages = new ArrayList<String>();
 		createWorld();
 		fov = new FieldOfView(world);
 		StuffFactory factory = new StuffFactory(world);
-		createCreatures(factory);
+		createCreatures(factory, playerclass);
 	}
 
-	private void createCreatures(StuffFactory factory) {
-		player = factory.newPlayer(messages, fov);
+	private void createCreatures(StuffFactory factory, int playerclass) {
+		player = factory.newPlayer(messages, fov, playerclass);
 		for(int z = 0; z < world.depth(); z++) {
 			for(int i = 0; i < 4; i++) {
 				factory.newFungus(z);
@@ -98,38 +98,30 @@ public class PlayScreen implements Screen {
 		} else {
 			switch (key.getKeyCode()){
 			case KeyEvent.VK_LEFT:
-			case KeyEvent.VK_H:
 			case KeyEvent.VK_NUMPAD4:
 				player.moveBy(-1, 0, 0);
 				break;
 			case KeyEvent.VK_RIGHT:
-			case KeyEvent.VK_L:
 			case KeyEvent.VK_NUMPAD6:
 				player.moveBy( 1, 0, 0);
 				break;
 			case KeyEvent.VK_UP:
-			case KeyEvent.VK_K:
 			case KeyEvent.VK_NUMPAD8:
 				player.moveBy( 0,-1, 0);
 				break;
 			case KeyEvent.VK_DOWN:
-			case KeyEvent.VK_J:
 			case KeyEvent.VK_NUMPAD2:
 				player.moveBy( 0, 1, 0);
 				break;
-			case KeyEvent.VK_Y:
 			case KeyEvent.VK_NUMPAD7:
 				player.moveBy(-1,-1, 0);
 				break;
-			case KeyEvent.VK_U:
 			case KeyEvent.VK_NUMPAD9:
 				player.moveBy( 1,-1, 0);
 				break;
-			case KeyEvent.VK_B:
 			case KeyEvent.VK_NUMPAD1:
 				player.moveBy(-1, 1, 0);
 				break;
-			case KeyEvent.VK_N:
 			case KeyEvent.VK_NUMPAD3:
 				player.moveBy( 1, 1, 0);
 				break;
