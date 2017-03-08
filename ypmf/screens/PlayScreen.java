@@ -147,6 +147,9 @@ public class PlayScreen implements Screen {
 					break;
 				}
 			case '>':
+				if(world.tile(player.x, player.y, player.z) == Tile.STAIRS_DOWN && player.z == world.depth() - 1) {
+					return new WinScreen();
+				}
 				player.moveBy( 0, 0, 1);
 				break;
 			case '?':
