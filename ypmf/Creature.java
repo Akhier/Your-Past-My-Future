@@ -48,9 +48,6 @@ public class Creature {
 	private int regenHpPer1000;
 	public void modifyRegenHpPer1000(int amount) { regenHpPer1000 += amount; }
 	
-	private List<Effect> effects;
-	public List<Effect> effects(){ return effects; }
-	
 	private int maxMana;
 	public int maxMana() { return maxMana; }
 	public void modifyMaxMana(int amount) { maxMana += amount; }
@@ -77,7 +74,6 @@ public class Creature {
 		this.visionRadius = 9;
 		this.name = name;
 		this.regenHpPer1000 = 30;
-		this.effects = new ArrayList<Effect>();
 		this.maxMana = mana;
 		this.mana = maxMana;
 		this.regenManaPer1000 = 20;
@@ -168,20 +164,7 @@ public class Creature {
 	public void update(){
 		regenerateHealth();
 		regenerateMana();
-		updateEffects();
 		ai.onUpdate();
-	}
-	
-	private void updateEffects(){
-		List<Effect> done = new ArrayList<Effect>();
-		for (Effect effect : effects){
-			effect.update(this);
-			if (effect.isDone()) {
-				effect.end(this);
-				done.add(effect);
-			}
-		}
-		effects.removeAll(done);
 	}
 	
 	private void regenerateHealth(){
@@ -277,15 +260,6 @@ public class Creature {
 	
 	public boolean isPlayer(){
 		return glyph == '@';
-	}
-	
-	@SuppressWarnings("unused")
-	private void addEffect(Effect effect){
-		if (effect == null) {
-			return;
-		}
-		effect.start(this);
-		effects.add(effect);
 	}
 	
 	public String details() {
