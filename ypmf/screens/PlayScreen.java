@@ -128,6 +128,14 @@ public class PlayScreen implements Screen {
 			case KeyEvent.VK_SEMICOLON:
 				subscreen = new LookScreen(player, "Looking", player.x - getScrollX(), player.y - getScrollY());
 				break;
+			case KeyEvent.VK_F:
+				break;
+			case KeyEvent.VK_D:
+				break;
+			case KeyEvent.VK_S:
+				break;
+			case KeyEvent.VK_A:
+				break;
 			}
 			
 			switch (key.getKeyChar()){

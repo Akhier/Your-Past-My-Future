@@ -11,14 +11,13 @@ public class StuffFactory {
 	}
 	
 	public Creature newPlayer(List<String> messages, FieldOfView fov, int playerclass){
-		System.out.println(playerclass);
 		Creature player;
 		if(playerclass == 0) {
-			player = new Creature(world, '@', AsciiPanel.brightYellow, "player", 120, 30, 5, 5);
+			player = new Creature(world, '@', AsciiPanel.brightYellow, "player(Pikeman)", 120, 30, 5, 5);
 		} else if (playerclass == 1) {
-			player = new Creature(world, '@', AsciiPanel.brightCyan, "player", 80, 25, 5, 10);
+			player = new Creature(world, '@', AsciiPanel.brightCyan, "player(Assasin)", 80, 25, 5, 10);
 		} else if (playerclass == 2) {
-			player = new Creature(world, '@', AsciiPanel.brightRed, "player", 100, 20, 5, 15);
+			player = new Creature(world, '@', AsciiPanel.brightRed, "player(Fire Magus)", 100, 20, 5, 15);
 		} else {
 			player = new Creature(world, '#', AsciiPanel.magenta, "ERROR", 0, 0, 0, 0);
 		}

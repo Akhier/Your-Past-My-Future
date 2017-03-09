@@ -14,12 +14,11 @@ public class StartScreen implements Screen {
 
 	@Override
 	public Screen respondToUserInput(KeyEvent key) {
-		switch(key.getKeyChar()) {
-		case 't': return new PlayScreen(0);
-		case 'g': return new PlayScreen(1);
-		case 'b': return new PlayScreen(2);
+		switch(key.getKeyCode()) {
+		case KeyEvent.VK_T: return new PlayScreen(0);
+		case KeyEvent.VK_G: return new PlayScreen(1);
+		case KeyEvent.VK_B: return new PlayScreen(2);
 		}
 		return this;
 	}
-
 }

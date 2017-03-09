@@ -76,7 +76,7 @@ public class Creature {
 		this.defenseValue = defense;
 		this.visionRadius = 9;
 		this.name = name;
-		this.regenHpPer1000 = 10;
+		this.regenHpPer1000 = 30;
 		this.effects = new ArrayList<Effect>();
 		this.maxMana = mana;
 		this.mana = maxMana;
@@ -279,6 +279,7 @@ public class Creature {
 		return glyph == '@';
 	}
 	
+	@SuppressWarnings("unused")
 	private void addEffect(Effect effect){
 		if (effect == null) {
 			return;
@@ -297,18 +298,4 @@ public class Creature {
 	
 	private int detectCreatures;
 	public void modifyDetectCreatures(int amount) { detectCreatures += amount; }
-	
-	public void castSpell(Spell spell, int x2, int y2) {
-		Creature other = creature(x2, y2, z);
-		if (spell.manaCost() > mana){
-			doAction("point and mumble but nothing happens");
-			return;
-		} else if (other == null) {
-			doAction("point and mumble at nothing");
-			return;
-		}
-		other.addEffect(spell.effect());
-		modifyMana(-spell.manaCost());
-	}
-	
 }
