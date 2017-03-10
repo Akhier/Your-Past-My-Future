@@ -145,7 +145,7 @@ public class PlayScreen implements Screen {
 				}
 				break;
 			case KeyEvent.VK_D:
-				if(player.z >= 0) {
+				if(player.z >= 1) {
 					switch(player.pClass()) {
 					case(0):
 						if(player.mana() >= 4) {
