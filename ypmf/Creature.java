@@ -138,7 +138,7 @@ public class Creature {
 		commonAttack(other, attackValue(), "attack the %s for %d damage", other.name);
 	}
 
-	private void commonAttack(Creature other, int attack, String action, Object ... params) {
+	public void commonAttack(Creature other, int attack, String action, Object ... params) {
 		int amount = Math.max(0, attack - other.defenseValue());
 		amount = (int)(Math.random() * amount) + 1;
 		Object[] params2 = new Object[params.length+1];

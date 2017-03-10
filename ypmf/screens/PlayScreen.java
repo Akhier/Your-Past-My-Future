@@ -15,7 +15,7 @@ import ypmf.World;
 public class PlayScreen implements Screen {
 	private World world;
 	private Creature player;
-	private int screenWidth, screenHeight;
+	private int screenWidth, screenHeight, playerClass;
 	private List<String> messages;
 	private FieldOfView fov;
 	private Screen subscreen;
@@ -28,6 +28,7 @@ public class PlayScreen implements Screen {
 		fov = new FieldOfView(world);
 		StuffFactory factory = new StuffFactory(world);
 		createCreatures(factory, playerclass);
+		playerClass = playerclass;
 	}
 
 	private void createCreatures(StuffFactory factory, int playerclass) {
@@ -129,6 +130,16 @@ public class PlayScreen implements Screen {
 				subscreen = new LookScreen(player, "Looking", player.x - getScrollX(), player.y - getScrollY());
 				break;
 			case KeyEvent.VK_F:
+				switch(playerClass) {
+				case(0):
+					if(player.mana() >= 1) {
+						subscreen = new LungeScreen(player, world);
+					} else {
+						player.doAction("need more mana");
+					}
+				case(1):
+				case(2):
+				}
 				break;
 			case KeyEvent.VK_D:
 				break;
