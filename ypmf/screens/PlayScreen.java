@@ -130,15 +130,18 @@ public class PlayScreen implements Screen {
 				subscreen = new LookScreen(player, "Looking", player.x - getScrollX(), player.y - getScrollY());
 				break;
 			case KeyEvent.VK_F:
-				switch(playerClass) {
-				case(0):
-					if(player.mana() >= 1) {
+				if(player.mana() >= 1) {
+					switch(playerClass) {
+					case(0):
 						subscreen = new LungeScreen(player, world);
-					} else {
-						player.doAction("need more mana");
+						break;
+					case(1):
+						subscreen = new PhaseStrikeScreen(player, world);
+						break;
+					case(2):
 					}
-				case(1):
-				case(2):
+				} else {
+					player.doAction("need more mana");
 				}
 				break;
 			case KeyEvent.VK_D:

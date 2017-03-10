@@ -78,6 +78,10 @@ public class World {
 		creatures.add(creature);
 	}
 
+	public boolean checkForEmptyLocation(int x, int y, int z) {
+		return tile(x, y, z).isGround() && creature(x, y, z) == null;
+	}
+
 	public void addAtStartingStairs(Creature creature) {
 		int x = 0, y = 0;
 		for(int lx = 0; lx < width; lx++) {

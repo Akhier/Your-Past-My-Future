@@ -1,18 +1,19 @@
 package ypmf.screens;
 
 import java.awt.event.KeyEvent;
+
 import asciiPanel.AsciiPanel;
 import ypmf.Creature;
 import ypmf.World;
 
-public class LungeScreen implements Screen {
+public class PhaseStrikeScreen implements Screen {
 	protected Creature player;
 	protected World world;
 
-	public LungeScreen(Creature player, World world) {
+	public PhaseStrikeScreen(Creature player, World world) {
 		this.player = player;
 		this.world = world;
-		player.doAction("should choose a direction to lunge");
+		player.doAction("need to choose a direction to phasestrike");
 	}
 
 	@Override
@@ -23,39 +24,38 @@ public class LungeScreen implements Screen {
 		switch(key.getKeyCode()) {
 		case(KeyEvent.VK_UP):
 		case(KeyEvent.VK_NUMPAD8):
-			attackTiles("N");
+			attackThrough("N");
 			break;
 		case(KeyEvent.VK_DOWN):
 		case(KeyEvent.VK_NUMPAD2):
-			attackTiles("S");
+			attackThrough("S");
 			break;
 		case(KeyEvent.VK_RIGHT):
 		case(KeyEvent.VK_NUMPAD6):
-			attackTiles("E");
+			attackThrough("E");
 			break;
 		case(KeyEvent.VK_LEFT):
 		case(KeyEvent.VK_NUMPAD4):
-			attackTiles("W");
+			attackThrough("W");
 			break;
 		case(KeyEvent.VK_NUMPAD9):
-			attackTiles("NE");
+			attackThrough("NE");
 			break;
 		case(KeyEvent.VK_NUMPAD7):
-			attackTiles("NW");
+			attackThrough("NW");
 			break;
 		case(KeyEvent.VK_NUMPAD3):
-			attackTiles("SE");
+			attackThrough("SE");
 			break;
 		case(KeyEvent.VK_NUMPAD1):
-			attackTiles("SW");
+			attackThrough("SW");
 			break;
 		}
 		return null;
 	}
 
-	private void attackTiles(String dir) {
-		int x1 = player.x, y1 = player.y;
-		int x2 = x1, y2 = y1;
+	private void attackThrough(String dir) {
+		int x1 = 0, y1 = 0, x2 = 0, y2 = 0;
 		if(dir.contains("N")) {
 			y2 = --y1;
 			y2--;
@@ -70,13 +70,14 @@ public class LungeScreen implements Screen {
 			x2 = --x1;
 			x2--;
 		}
-		Creature c1 = world.creature(x1, y1, player.z), c2 = world.creature(x2, y2, player.z);
-		if(c1 != null) {
-			player.commonAttack(c1, (int)(player.attackValue() * 1.5), "lunge at the %s for %d damage", c1.name());
-		}
-		if(c2 != null) {
-			player.commonAttack(c2, (int)(player.attackValue() * 1.25), "lunge at the %s for %d damage", c2.name());
+		if(world.checkForEmptyLocation(player.x + x2, player.y + y2, player.z)) {
+			Creature c1 = world.creature(player.x + x1, player.y + y1, player.z);
+			if(c1 != null) {
+				player.commonAttack(c1, (int)(player.attackValue() * .8), "swipe at the %s for %d damage", c1.name());
+			}
+			player.moveBy(x2, y2, player.z);
 		}
 		player.modifyMana(-1);
 	}
+
 }
