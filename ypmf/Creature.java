@@ -62,6 +62,9 @@ public class Creature {
 	
 	private String causeOfDeath;
 	public String causeOfDeath() { return causeOfDeath; }
+
+	private int playerClass;
+	public int pClass() { return playerClass; }
 	
 	public Creature(World world, char glyph, Color color, String name, int maxHp, int attack, int defense, int mana){
 		this.world = world;
@@ -79,6 +82,23 @@ public class Creature {
 		this.regenManaPer1000 = 20;
 	}
 	
+	public Creature(World world, char glyph, Color color, String name, int maxHp, int attack, int defense, int mana, int playerclass){
+		this.world = world;
+		this.glyph = glyph;
+		this.color = color;
+		this.maxHp = maxHp;
+		this.hp = maxHp;
+		this.attackValue = attack;
+		this.defenseValue = defense;
+		this.visionRadius = 9;
+		this.name = name;
+		this.regenHpPer1000 = 30;
+		this.maxMana = mana;
+		this.mana = maxMana;
+		this.regenManaPer1000 = 20;
+		this.playerClass = playerclass;
+	}
+	
 	public void moveBy(int mx, int my, int mz){
 		if (mx==0 && my==0 && mz==0) {
 			return;
@@ -94,6 +114,20 @@ public class Creature {
 							gx = lx;
 							gy = ly;
 							done = true;
+							switch(pClass()) {
+							case(0):
+								maxMana += 2;
+								maxHp += 15;
+								break;
+							case(1):
+								maxMana += 4;
+								maxHp += 10;
+								break;
+							case(2):
+								maxMana += 6;
+								maxHp += 5;
+								break;
+							}
 							break;
 						}
 						if(done) { break; }
@@ -101,25 +135,6 @@ public class Creature {
 				}
 			} else {
 				doAction("try to go up but are stopped by the cave ceiling");
-				return;
-			}
-		} else if (mz == 1){
-			if (world.tile(x, y, z) == Tile.STAIRS_DOWN) {
-				doAction("walk down the stairs to level %d", z+mz+1);
-				for(int lx = 0; lx < world.width(); lx++) {
-					for(int ly = 0; ly < world.height(); ly++) {
-						boolean done = false;
-						if(world.tile(lx, ly, gz) == Tile.STAIRS_UP) {
-							gx = lx;
-							gy = ly;
-							done = true;
-							break;
-						}
-						if(done) { break; }
-					}
-				}
-			} else {
-				doAction("try to go down but are stopped by the cave floor");
 				return;
 			}
 		}

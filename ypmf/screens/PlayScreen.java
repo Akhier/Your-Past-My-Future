@@ -15,7 +15,7 @@ import ypmf.World;
 public class PlayScreen implements Screen {
 	private World world;
 	private Creature player;
-	private int screenWidth, screenHeight, playerClass;
+	private int screenWidth, screenHeight;
 	private List<String> messages;
 	private FieldOfView fov;
 	private Screen subscreen;
@@ -28,7 +28,6 @@ public class PlayScreen implements Screen {
 		fov = new FieldOfView(world);
 		StuffFactory factory = new StuffFactory(world);
 		createCreatures(factory, playerclass);
-		playerClass = playerclass;
 	}
 
 	private void createCreatures(StuffFactory factory, int playerclass) {
@@ -131,7 +130,7 @@ public class PlayScreen implements Screen {
 				break;
 			case KeyEvent.VK_F:
 				if(player.mana() >= 1) {
-					switch(playerClass) {
+					switch(player.pClass()) {
 					case(0):
 						subscreen = new LungeScreen(player);
 						break;
@@ -146,6 +145,16 @@ public class PlayScreen implements Screen {
 				}
 				break;
 			case KeyEvent.VK_D:
+				if(player.z >= 1) {
+					switch(player.pClass()) {
+					case(0):
+						if(player.mana() >= 4) {
+						subscreen = new WideSwipeScreen(player);
+						} else {
+							player.doAction("need 4 mana to wide swipe");
+						}
+					}
+				}
 				break;
 			case KeyEvent.VK_S:
 				break;
