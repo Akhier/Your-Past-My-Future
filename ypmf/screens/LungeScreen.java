@@ -3,15 +3,12 @@ package ypmf.screens;
 import java.awt.event.KeyEvent;
 import asciiPanel.AsciiPanel;
 import ypmf.Creature;
-import ypmf.World;
 
 public class LungeScreen implements Screen {
 	protected Creature player;
-	protected World world;
 
-	public LungeScreen(Creature player, World world) {
+	public LungeScreen(Creature player) {
 		this.player = player;
-		this.world = world;
 		player.doAction("should choose a direction to lunge");
 	}
 
@@ -70,7 +67,7 @@ public class LungeScreen implements Screen {
 			x2 = --x1;
 			x2--;
 		}
-		Creature c1 = world.creature(x1, y1, player.z), c2 = world.creature(x2, y2, player.z);
+		Creature c1 = player.creature(x1, y1, player.z), c2 = player.creature(x2, y2, player.z);
 		if(c1 != null) {
 			player.commonAttack(c1, (int)(player.attackValue() * 1.5), "lunge at the %s for %d damage", c1.name());
 		}

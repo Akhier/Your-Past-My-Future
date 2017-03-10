@@ -133,12 +133,13 @@ public class PlayScreen implements Screen {
 				if(player.mana() >= 1) {
 					switch(playerClass) {
 					case(0):
-						subscreen = new LungeScreen(player, world);
+						subscreen = new LungeScreen(player);
 						break;
 					case(1):
 						subscreen = new PhaseStrikeScreen(player, world);
 						break;
 					case(2):
+						subscreen = new SparkScreen(player, player.x - getScrollX(), player.y - getScrollY());
 					}
 				} else {
 					player.doAction("need more mana");
