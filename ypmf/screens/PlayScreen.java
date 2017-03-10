@@ -145,14 +145,24 @@ public class PlayScreen implements Screen {
 				}
 				break;
 			case KeyEvent.VK_D:
-				if(player.z >= 1) {
+				if(player.z >= 0) {
 					switch(player.pClass()) {
 					case(0):
 						if(player.mana() >= 4) {
-						subscreen = new WideSwipeScreen(player);
+							subscreen = new WideSwipeScreen(player);
 						} else {
 							player.doAction("need 4 mana to wide swipe");
 						}
+						break;
+					case(1):
+						break;
+					case(2):
+						if(player.mana() >= 3) {
+							subscreen = new FireballScreen(player, world, player.x - getScrollX(), player.y - getScrollY());
+						} else {
+							player.doAction("need 3 mana for a fireball");
+						}
+						break;
 					}
 				}
 				break;
