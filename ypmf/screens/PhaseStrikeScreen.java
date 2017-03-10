@@ -76,6 +76,8 @@ public class PhaseStrikeScreen implements Screen {
 				player.commonAttack(c1, (int)(player.attackValue() * .8), "swipe at the %s for %d damage", c1.name());
 			}
 			player.moveBy(x2, y2, player.z);
+		} else {
+			player.doAction("fail your phasestrike");
 		}
 		player.modifyMana(-1);
 	}
