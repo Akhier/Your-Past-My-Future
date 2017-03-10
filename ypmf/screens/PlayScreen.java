@@ -155,6 +155,11 @@ public class PlayScreen implements Screen {
 						}
 						break;
 					case(1):
+						if(player.mana() >= 6) {
+							subscreen = new DeadlyStrikeScreen(player);
+						} else {
+							player.doAction("need 6 mana to do a deadly strike");
+						}
 						break;
 					case(2):
 						if(player.mana() >= 3) {
@@ -173,13 +178,6 @@ public class PlayScreen implements Screen {
 			}
 			
 			switch (key.getKeyChar()){
-			case '<': 
-				if (userIsTryingToExit()) {
-					return userExits();
-				} else {
-					player.moveBy( 0, 0, -1);
-					break;
-				}
 			case '>':
 				if(world.tile(player.x, player.y, player.z) == Tile.STAIRS_DOWN && player.z == world.depth() - 1) {
 					return new WinScreen();
@@ -198,14 +196,5 @@ public class PlayScreen implements Screen {
 			return new LoseScreen(player);
 		}
 		return this;
-	}
-
-	private boolean userIsTryingToExit() {
-		return player.z == 0 && world.tile(player.x, player.y, player.z) == Tile.STAIRS_UP;
-	}
-
-	private Screen userExits() {
-		player.modifyHp(0, "Died while cowardly fleeing the caves.");
-		return new LoseScreen(player);
 	}
 }
