@@ -69,8 +69,8 @@ public class World {
 		int x;
 		int y;
 		do {
-			x = (int)(Math.random() * width);
-			y = (int)(Math.random() * height);
+			x = MapGen.rng.nextInt(width);
+			y = MapGen.rng.nextInt(height);
 		} while (!tile(x,y,z).isGround() || creature(x,y,z) != null);
 		creature.x = x;
 		creature.y = y;

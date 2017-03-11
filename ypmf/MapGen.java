@@ -3,7 +3,7 @@ package ypmf;
 import java.util.Random;
 
 public class MapGen {
-	private static Random rng;
+	public static Random rng;
 	private static boolean[][][] walkable;
 
 	public static World makeLevels(int width, int height, int depth, int seed) {

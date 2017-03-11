@@ -51,13 +51,13 @@ public class PlayScreen implements Screen {
 			}
 		} catch (IOException e) { }
 		for(int z = 0; z < world.depth(); z++) {
-			for(int i = 0; i < 4; i++) {
+			for(int i = 0; i < 8; i++) {
 				factory.newFungus(z);
 			}
 			for(int i = 0; i < 10; i++) {
 				factory.newBat(z);
 			}
-			for(int i = 0; i < z * 2 + 1; i++) {
+			for(int i = 0; i < (z + 1) * 3 + 1; i++) {
 				factory.newZombie(z, player);
 				factory.newGoblin(z, player);
 			}

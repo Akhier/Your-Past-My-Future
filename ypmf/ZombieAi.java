@@ -10,7 +10,7 @@ public class ZombieAi extends CreatureAi {
 	}
 
 	public void onUpdate(){
-		if (Math.random() < 0.2) {
+		if(MapGen.rng.nextInt(10) < 2) {
 			return;
 		}
 		if (creature.canSee(player.x, player.y, player.z)) {

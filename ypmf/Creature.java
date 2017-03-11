@@ -135,6 +135,8 @@ public class Creature {
 								maxHp += 5;
 								break;
 							}
+							mana = maxMana;
+							hp = maxHp;
 							break;
 						}
 						if(done) { break; }
@@ -161,8 +163,8 @@ public class Creature {
 	}
 
 	public void commonAttack(Creature other, int attack, String action, Object ... params) {
-		int amount = Math.max(0, attack - other.defenseValue());
-		amount = (int)(Math.random() * amount) + 1;
+		int amount = Math.max(1, attack - other.defenseValue());
+		amount = MapGen.rng.nextInt(amount) + 1;
 		Object[] params2 = new Object[params.length+1];
 		for (int i = 0; i < params.length; i++){
 			params2[i] = params[i];
