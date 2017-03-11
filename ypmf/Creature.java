@@ -104,13 +104,13 @@ public class Creature {
 			return;
 		}
 		int gx = x + mx, gy = y + my, gz = z + mz;
-		if (mz == -1){
-			if (world.tile(x, y, z) == Tile.STAIRS_UP) {
-				doAction("walk up the stairs to level %d", z+mz+1);
+		if (mz == 1){
+			if (world.tile(x, y, z) == Tile.STAIRS_DOWN) {
+				doAction("walk down the stairs to level %d", z+mz+1);
 				for(int lx = 0; lx < world.width(); lx++) {
 					for(int ly = 0; ly < world.height(); ly++) {
 						boolean done = false;
-						if(world.tile(lx, ly, gz) == Tile.STAIRS_DOWN) {
+						if(world.tile(lx, ly, gz) == Tile.STAIRS_UP) {
 							gx = lx;
 							gy = ly;
 							done = true;
@@ -134,7 +134,7 @@ public class Creature {
 					}
 				}
 			} else {
-				doAction("try to go up but are stopped by the cave ceiling");
+				doAction("try to go down but are stopped by the cave floor");
 				return;
 			}
 		}
