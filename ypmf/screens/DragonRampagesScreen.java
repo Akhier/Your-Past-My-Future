@@ -3,17 +3,16 @@ package ypmf.screens;
 import java.awt.event.KeyEvent;
 import asciiPanel.AsciiPanel;
 import ypmf.Creature;
-import ypmf.Tile;
 import ypmf.World;
 
-public class PheonixBurstBeamScreen implements Screen {
+public class DragonRampagesScreen implements Screen {
 	protected Creature player;
 	protected World world;
 
-	public PheonixBurstBeamScreen(Creature player, World world) {
+	public DragonRampagesScreen(Creature player, World world) {
 		this.player = player;
 		this.world = world;
-		player.doAction("should choose a direction to unleash a Pheonix Burst Beam");
+		player.doAction("should choose a direction to unleash the Dragon Rampages");
 	}
 
 	@Override
@@ -51,24 +50,27 @@ public class PheonixBurstBeamScreen implements Screen {
 			attackTiles("SW");
 			break;
 		}
-		player.modifyMana(-16);
+		player.modifyMana(-12);
 		return null;
 	}
 
 	private void attackTiles(String dir) {
-		for(int x = -2; x <= 2; x++) {
-			for(int y = -2; y <= 2; y++) {
+		for(int x = -1; x <= 1; x++) {
+			for(int y = -1; y <= 1; y++) {
 				if(x == 0 && y == 0) {
 					continue;
 				}
 				Creature c = world.creature(player.x + x, player.y + y, player.z);
 				if(c != null) {
-					player.commonAttack(c, player.attackValue() * 10, "burn down the %s for %d damage", c.name());
+					player.commonAttack(c, player.attackValue() * 20, "crush the %s with your killing intent doing %d damage", c.name());
 				}
 			}
 		}
 		int x = player.x, y = player.y, z = player.z;
-		do {
+		for(int i = 0; i < 10; i++) {
+			if(x < 1 || x > world.width() - 2 || y < 1 || y > world.height() - 2) {
+				break;
+			}
 			switch(dir) {
 			case("N"):
 				y--;
@@ -123,13 +125,14 @@ public class PheonixBurstBeamScreen implements Screen {
 				blastTile(x, y - 1, z);
 				break;
 			}
-		} while(world.tile(x, y, z) != Tile.WALL);
+			world.dig(x, y, z);
+		}
 	}
 
 	private void blastTile(int x, int y, int z) {
 		Creature c = world.creature(x, y, z);
 		if(c != null) {
-			player.commonAttack(c, player.attackValue() * 5, "blast the %s doing %d damage", c.name());
+			player.commonAttack(c, player.attackValue() * 8, "striking the %s with your spear intent doing %d damage", c.name());
 		}
 	}
 }

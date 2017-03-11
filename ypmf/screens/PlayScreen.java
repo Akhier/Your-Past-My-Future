@@ -59,7 +59,7 @@ public class PlayScreen implements Screen {
 		int top = getScrollY();
 		displayTiles(terminal, left, top);
 		displayMessages(terminal, messages);
-		String stats = String.format(" %3d/%3d hp   %d/%d mana", player.hp(), player.maxHp(), player.mana(), player.maxMana());
+		String stats = String.format(" %3d/%3d hp   %d/%d mana   Dungeon Level %d", player.hp(), player.maxHp(), player.mana(), player.maxMana(), player.z + 1);
 		terminal.write(stats, 1, 23);
 		if(subscreen != null) {
 			subscreen.displayOutput(terminal);
@@ -175,14 +175,19 @@ public class PlayScreen implements Screen {
 				if(player.z >= 0) {
 					switch(player.pClass()) {
 					case(0):
+						if(player.mana() >= 12) {
+							subscreen = new DragonRampagesScreen(player, world);
+						} else {
+							player.doAction("need 12 mana to unleash Dragon Rampages");
+						}
 						break;
 					case(1):
 						break;
 					case(2):
-						if(player.mana() >= 12) {
+						if(player.mana() >= 16) {
 							subscreen = new PheonixBurstBeamScreen(player, world);
 						} else {
-							player.doAction("need 12 mana for Pheonix Burst Beam");
+							player.doAction("need 16 mana for Pheonix Burst Beam");
 						}
 						break;
 					}
