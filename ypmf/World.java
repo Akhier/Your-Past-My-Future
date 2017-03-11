@@ -20,7 +20,10 @@ public class World {
 	public int depth() { return depth; }
 	
 	private List<Creature> creatures;
-	
+
+	private long turn;
+	public long turn() { return turn; }
+
 	public World(Tile[][][] tiles, int seed){
 		this.seed = seed;
 		this.tiles = tiles;
@@ -28,6 +31,7 @@ public class World {
 		this.height = tiles[0].length;
 		this.depth = tiles[0][0].length;
 		this.creatures = new ArrayList<Creature>();
+		this.turn = 0;
 	}
 
 	public Creature creature(int x, int y, int z){
@@ -106,7 +110,7 @@ public class World {
 		creatures.add(creature);
 	}
 
-	public void addAtEndingStairs(Creature creature) {
+	public void addAtEndingStairs(Creature creature, int z) {
 		int x = 0, y = 0;
 		for(int lx = 0; lx < width; lx++) {
 			for(int ly = 0; ly < height; ly++) {
@@ -122,7 +126,7 @@ public class World {
 		}
 		creature.x = x;
 		creature.y = y;
-		creature.z = 0;
+		creature.z = z;
 		creatures.add(creature);
 	}
 	
@@ -131,6 +135,7 @@ public class World {
 		for (Creature creature : toUpdate){
 			creature.update();
 		}
+		turn++;
 	}
 
 	public void remove(Creature other) {

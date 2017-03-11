@@ -61,7 +61,7 @@ public class StuffFactory {
 	public Creature newSeniorGoblin(int depth, Creature player){
 		Creature seniorgoblin = new Creature(world, 'g', AsciiPanel.green, "Senior goblin", 120, 20, 5, 5);
 		new GoblinAi(seniorgoblin, player);
-		world.addAtEndingStairs(seniorgoblin);
+		world.addAtEndingStairs(seniorgoblin, depth);
 		return seniorgoblin;
 	}
 }

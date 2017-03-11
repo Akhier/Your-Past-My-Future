@@ -62,7 +62,7 @@ public class PlayScreen implements Screen {
 				factory.newGoblin(z, player);
 			}
 		}
-		factory.newSeniorGoblin(2, player);
+		factory.newSeniorGoblin(world.depth() - 1, player);
 	}
 
 	private void createWorld() {
@@ -88,7 +88,9 @@ public class PlayScreen implements Screen {
 	private void displayMessages(AsciiPanel terminal, List<String> messages) {
 		int top = screenHeight - messages.size();
 		for(int i = 0; i < messages.size(); i++) {
-			terminal.writeCenter(messages.get(i), top + i);
+			if(top + i < 24) {
+				terminal.writeCenter(messages.get(i), top + i);
+			}
 		}
 		if(subscreen == null) {
 			messages.clear();
@@ -115,7 +117,6 @@ public class PlayScreen implements Screen {
 		boolean didSomething = false;
 		if(subscreen != null) {
 			subscreen = subscreen.respondToUserInput(key);
-			didSomething = true;
 		} else {
 			switch (key.getKeyCode()){
 			case KeyEvent.VK_LEFT:
@@ -302,14 +303,14 @@ public class PlayScreen implements Screen {
 				}
 				break;
 			case(KeyEvent.VK_ESCAPE):
-				subscreen = new QuitConfirmScreen(player);
+				subscreen = new QuitConfirmScreen(player, world);
 				break;
 			}
 			
 			switch (key.getKeyChar()){
 			case '>':
 				if(world.tile(player.x, player.y, player.z) == Tile.STAIRS_DOWN && player.z == world.depth() - 1) {
-					return new WinScreen();
+					return new WinScreen(world);
 				}
 				player.moveBy( 0, 0, 1);
 				didSomething = true;
@@ -323,7 +324,7 @@ public class PlayScreen implements Screen {
 			world.update();
 		}
 		if(player.hp() < 1) {
-			return new LoseScreen(player);
+			return new LoseScreen(player, world);
 		}
 		return this;
 	}
