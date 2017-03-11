@@ -172,6 +172,21 @@ public class PlayScreen implements Screen {
 				}
 				break;
 			case KeyEvent.VK_S:
+				if(player.z >= 0) {
+					switch(player.pClass()) {
+					case(0):
+						break;
+					case(1):
+						break;
+					case(2):
+						if(player.mana() >= 12) {
+							subscreen = new PheonixBurstBeamScreen(player, world);
+						} else {
+							player.doAction("need 12 mana for Pheonix Burst Beam");
+						}
+						break;
+					}
+				}
 				break;
 			case KeyEvent.VK_A:
 				break;
