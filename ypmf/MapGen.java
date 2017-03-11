@@ -5,9 +5,15 @@ import java.util.Random;
 public class MapGen {
 	public static Random rng;
 	private static boolean[][][] walkable;
+	private static int Seed;
 
 	public static World makeLevels(int width, int height, int depth, int seed) {
-		rng = new Random(seed);
+		if(seed == -1) {
+			Seed = (int)(Math.random() * 10000);
+		} else {
+			Seed = seed;
+		}
+		rng = new Random(Seed);
 		walkable = new boolean[width][height][depth];
 		for(int z = 0; z < depth; z++) {
 			int maxRooms = 1000;
@@ -128,7 +134,7 @@ public class MapGen {
 				}
 			}
 		}
-		World output = new World(tiles);
+		World output = new World(tiles, Seed);
 		return output;
 	}
 

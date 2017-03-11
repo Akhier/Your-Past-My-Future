@@ -44,11 +44,11 @@ public class PlayScreen implements Screen {
 		try(PrintWriter writer = new PrintWriter("prevclass.txt", "UTF-8")){
 			if((playerclass == 0 && (prevclass == 0 || prevclass == 3 || prevclass == 6) || (playerclass == 1 && (prevclass == 1 || prevclass == 4 || prevclass == 7)) || (playerclass == 2 && (prevclass == 2 || prevclass == 5 || prevclass == 8)))) {
 				player.previousClass = -1;
-				writer.println(-1);
 			} else {
 				player.previousClass = prevclass;
-				writer.println(playerclass);
 			}
+			writer.println(playerclass);
+			writer.println(world.seed());
 		} catch (IOException e) { }
 		for(int z = 0; z < world.depth(); z++) {
 			for(int i = 0; i < 8; i++) {
@@ -65,7 +65,7 @@ public class PlayScreen implements Screen {
 	}
 
 	private void createWorld() {
-		world = MapGen.makeLevels(200, 32, 3, 222);
+		world = MapGen.makeLevels(200, 32, 3, -1);
 	}
 
 	public int getScrollX() { return Math.max(0, Math.min(player.x - screenWidth / 2, world.width() - screenWidth)); }

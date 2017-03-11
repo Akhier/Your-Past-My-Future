@@ -6,6 +6,9 @@ import java.util.List;
 
 public class World {
 	private Tile[][][] tiles;
+
+	private int seed;
+	public int seed() { return seed; }
 	
 	private int width;
 	public int width() { return width; }
@@ -18,7 +21,8 @@ public class World {
 	
 	private List<Creature> creatures;
 	
-	public World(Tile[][][] tiles){
+	public World(Tile[][][] tiles, int seed){
+		this.seed = seed;
 		this.tiles = tiles;
 		this.width = tiles.length;
 		this.height = tiles[0].length;
