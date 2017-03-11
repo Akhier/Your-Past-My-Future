@@ -80,10 +80,10 @@ public class Creature {
 		this.defenseValue = defense;
 		this.visionRadius = 9;
 		this.name = name;
-		this.regenHpPer1000 = 30;
+		this.regenHpPer1000 = 100;
 		this.maxMana = mana;
 		this.mana = maxMana;
-		this.regenManaPer1000 = 20;
+		this.regenManaPer1000 = 100;
 	}
 	
 	public Creature(World world, char glyph, Color color, String name, int maxHp, int attack, int defense, int mana, int playerclass){

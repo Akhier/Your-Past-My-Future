@@ -38,12 +38,13 @@ public class PlayScreen implements Screen {
 	private void createCreatures(StuffFactory factory, int playerclass) {
 		player = factory.newPlayer(messages, fov, playerclass);
 		int prevclass = -1;
-		try(Scanner sc = new Scanner(new FileReader("prevclass"))) {
+		try(Scanner sc = new Scanner(new FileReader("prevclass.txt"))) {
 			prevclass = sc.nextInt();
 		} catch (IOException e) { }
-		try(PrintWriter writer = new PrintWriter("prevclass", "UTF-8")){
+		try(PrintWriter writer = new PrintWriter("prevclass.txt", "UTF-8")){
 			if((playerclass == 0 && (prevclass == 0 || prevclass == 3 || prevclass == 6) || (playerclass == 1 && (prevclass == 1 || prevclass == 4 || prevclass == 7)) || (playerclass == 2 && (prevclass == 2 || prevclass == 5 || prevclass == 8)))) {
 				player.previousClass = -1;
+				writer.println(-1);
 			} else {
 				player.previousClass = prevclass;
 				writer.println(playerclass);
@@ -289,6 +290,9 @@ public class PlayScreen implements Screen {
 					break;
 				}
 				break;
+			case(KeyEvent.VK_ESCAPE):
+				subscreen = new QuitConfirmScreen(player);
+				break;
 			}
 			
 			switch (key.getKeyChar()){
@@ -299,7 +303,7 @@ public class PlayScreen implements Screen {
 				player.moveBy( 0, 0, 1);
 				break;
 			case '?':
-				subscreen = new HelpScreen();
+				subscreen = new HelpScreen(player);
 				break;
 			}
 		}
