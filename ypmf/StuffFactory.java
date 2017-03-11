@@ -31,7 +31,7 @@ public class StuffFactory {
 	}
 	
 	public Creature newFungus(int depth){
-		Creature fungus = new Creature(world, 'f', AsciiPanel.green, "fungus", 10, 0, 0, 0);
+		Creature fungus = new Creature(world, 'f', AsciiPanel.brightGreen, "fungus", 10, 0, 0, 0);
 		world.addAtEmptyLocation(fungus, depth);
 		new FungusAi(fungus, this);
 		return fungus;

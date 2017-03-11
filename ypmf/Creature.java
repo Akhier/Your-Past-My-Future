@@ -16,6 +16,7 @@ public class Creature {
 	
 	private Color color;
 	public Color color() { return color; }
+	public void setColor(Color color) { this.color = color; }
 
 	private CreatureAi ai;
 	public void setCreatureAi(CreatureAi ai) { this.ai = ai; }
