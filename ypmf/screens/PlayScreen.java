@@ -111,6 +111,7 @@ public class PlayScreen implements Screen {
 
 	@Override
 	public Screen respondToUserInput(KeyEvent key) {
+		boolean didSomething = false;
 		if(subscreen != null) {
 			subscreen = subscreen.respondToUserInput(key);
 		} else {
@@ -118,30 +119,38 @@ public class PlayScreen implements Screen {
 			case KeyEvent.VK_LEFT:
 			case KeyEvent.VK_NUMPAD4:
 				player.moveBy(-1, 0, 0);
+				didSomething = true;
 				break;
 			case KeyEvent.VK_RIGHT:
 			case KeyEvent.VK_NUMPAD6:
 				player.moveBy( 1, 0, 0);
+				didSomething = true;
 				break;
 			case KeyEvent.VK_UP:
 			case KeyEvent.VK_NUMPAD8:
 				player.moveBy( 0,-1, 0);
+				didSomething = true;
 				break;
 			case KeyEvent.VK_DOWN:
 			case KeyEvent.VK_NUMPAD2:
 				player.moveBy( 0, 1, 0);
+				didSomething = true;
 				break;
 			case KeyEvent.VK_NUMPAD7:
 				player.moveBy(-1,-1, 0);
+				didSomething = true;
 				break;
 			case KeyEvent.VK_NUMPAD9:
 				player.moveBy( 1,-1, 0);
+				didSomething = true;
 				break;
 			case KeyEvent.VK_NUMPAD1:
 				player.moveBy(-1, 1, 0);
+				didSomething = true;
 				break;
 			case KeyEvent.VK_NUMPAD3:
 				player.moveBy( 1, 1, 0);
+				didSomething = true;
 				break;
 			case KeyEvent.VK_SEMICOLON:
 				subscreen = new LookScreen(player, "Looking", player.x - getScrollX(), player.y - getScrollY());
@@ -151,6 +160,7 @@ public class PlayScreen implements Screen {
 				case(0):
 					if (player.mana() >= 1) {
 						subscreen = new LungeScreen(player);
+						didSomething = true;
 					} else {
 						player.doAction("need more mana");
 					}
@@ -158,6 +168,7 @@ public class PlayScreen implements Screen {
 				case(1):
 					if (player.mana() >= 1) {
 						subscreen = new PhaseStrikeScreen(player, world);
+						didSomething = true;
 					} else {
 						player.doAction("need more mana");
 					}
@@ -165,6 +176,7 @@ public class PlayScreen implements Screen {
 				case(2):
 					if (player.mana() >= 1) {
 						subscreen = new SparkScreen(player, player.x - getScrollX(), player.y - getScrollY());
+						didSomething = true;
 					} else {
 						player.doAction("need more mana");
 					}
@@ -176,6 +188,7 @@ public class PlayScreen implements Screen {
 					case(0):
 						if(player.mana() >= 4) {
 							subscreen = new WideSwipeScreen(player);
+							didSomething = true;
 						} else {
 							player.doAction("need 4 mana to wide swipe");
 						}
@@ -183,6 +196,7 @@ public class PlayScreen implements Screen {
 					case(1):
 						if(player.mana() >= 6) {
 							subscreen = new DeadlyStrikeScreen(player);
+							didSomething = true;
 						} else {
 							player.doAction("need 6 mana to do a deadly strike");
 						}
@@ -190,6 +204,7 @@ public class PlayScreen implements Screen {
 					case(2):
 						if(player.mana() >= 3) {
 							subscreen = new FireballScreen(player, world, player.x - getScrollX(), player.y - getScrollY());
+							didSomething = true;
 						} else {
 							player.doAction("need 3 mana for a fireball");
 						}
@@ -203,13 +218,15 @@ public class PlayScreen implements Screen {
 					case(0):
 						if(player.mana() >= 12) {
 							subscreen = new DragonRampagesScreen(player, world);
+							didSomething = true;
 						} else {
 							player.doAction("need 12 mana to unleash Dragon Rampages");
 						}
 						break;
 					case(1):
 						if(player.mana() >= 13) {
-						subscreen = new TigerArrogantlySlaughters(player, world);
+							subscreen = new TigerArrogantlySlaughters(player, world);
+							didSomething = true;
 						} else {
 							player.doAction("need 13 mana for the Tiger Arrogantly Slaughters");
 						}
@@ -217,6 +234,7 @@ public class PlayScreen implements Screen {
 					case(2):
 						if(player.mana() >= 16) {
 							subscreen = new PheonixBurstBeamScreen(player, world);
+							didSomething = true;
 						} else {
 							player.doAction("need 16 mana for Pheonix Burst Beam");
 						}
@@ -229,6 +247,7 @@ public class PlayScreen implements Screen {
 				case(0):
 					if (player.mana() >= 1) {
 						subscreen = new LungeScreen(player);
+						didSomething = true;
 					} else {
 						player.doAction("need more mana");
 					}
@@ -236,6 +255,7 @@ public class PlayScreen implements Screen {
 				case(1):
 					if (player.mana() >= 1) {
 						subscreen = new PhaseStrikeScreen(player, world);
+						didSomething = true;
 					} else {
 						player.doAction("need more mana");
 					}
@@ -243,12 +263,14 @@ public class PlayScreen implements Screen {
 				case(2):
 					if (player.mana() >= 1) {
 						subscreen = new SparkScreen(player, player.x - getScrollX(), player.y - getScrollY());
+						didSomething = true;
 					} else {
 						player.doAction("need more mana");
 					}
 				case(3):
 					if(player.mana() >= 4) {
 						subscreen = new WideSwipeScreen(player);
+						didSomething = true;
 					} else {
 						player.doAction("need 4 mana to wide swipe");
 					}
@@ -256,6 +278,7 @@ public class PlayScreen implements Screen {
 				case(4):
 					if(player.mana() >= 6) {
 						subscreen = new DeadlyStrikeScreen(player);
+						didSomething = true;
 					} else {
 						player.doAction("need 6 mana to do a deadly strike");
 					}
@@ -263,6 +286,7 @@ public class PlayScreen implements Screen {
 				case(5):
 					if(player.mana() >= 3) {
 						subscreen = new FireballScreen(player, world, player.x - getScrollX(), player.y - getScrollY());
+						didSomething = true;
 					} else {
 						player.doAction("need 3 mana for a fireball");
 					}
@@ -270,13 +294,15 @@ public class PlayScreen implements Screen {
 				case(6):
 					if(player.mana() >= 12) {
 						subscreen = new DragonRampagesScreen(player, world);
+						didSomething = true;
 					} else {
 						player.doAction("need 12 mana to unleash Dragon Rampages");
 					}
 					break;
 				case(7):
 					if(player.mana() >= 13) {
-					subscreen = new TigerArrogantlySlaughters(player, world);
+						subscreen = new TigerArrogantlySlaughters(player, world);
+						didSomething = true;
 					} else {
 						player.doAction("need 13 mana for the Tiger Arrogantly Slaughters");
 					}
@@ -284,6 +310,7 @@ public class PlayScreen implements Screen {
 				case(8):
 					if(player.mana() >= 16) {
 						subscreen = new PheonixBurstBeamScreen(player, world);
+						didSomething = true;
 					} else {
 						player.doAction("need 16 mana for Pheonix Burst Beam");
 					}
@@ -292,6 +319,7 @@ public class PlayScreen implements Screen {
 				break;
 			case(KeyEvent.VK_ESCAPE):
 				subscreen = new QuitConfirmScreen(player);
+				didSomething = true;
 				break;
 			}
 			
@@ -301,13 +329,14 @@ public class PlayScreen implements Screen {
 					return new WinScreen();
 				}
 				player.moveBy( 0, 0, 1);
+				didSomething = true;
 				break;
 			case '?':
 				subscreen = new HelpScreen(player);
 				break;
 			}
 		}
-		if(subscreen == null) {
+		if(didSomething) {
 			world.update();
 		}
 		if(player.hp() < 1) {
