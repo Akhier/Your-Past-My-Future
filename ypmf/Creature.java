@@ -115,7 +115,7 @@ public class Creature {
 					for(int ly = 0; ly < world.height(); ly++) {
 						boolean done = false;
 						if(world.tile(lx, ly, gz) == Tile.STAIRS_UP) {
-							try(PrintWriter writer = new PrintWriter("prevclass", "UTF-8")){
+							try(PrintWriter writer = new PrintWriter("prevclass.txt", "UTF-8")){
 							    writer.println(pClass() + z * 3);
 							} catch (IOException e) { }
 							gx = lx;

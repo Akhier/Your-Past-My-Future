@@ -24,7 +24,6 @@ public class HelpScreen implements Screen{
 			abilities[1] = "Fireball";
 			abilities[2] = "Pheonix Burst Beam";
 		}
-		System.out.println(player.previousClass);
 		switch(player.previousClass) {
 		case(0):
 			abilities[3] = "Lunge";
@@ -68,8 +67,12 @@ public class HelpScreen implements Screen{
 		terminal.write("[;] to look around", 2, y++);
 		terminal.write("[esc] to quit", 2, y++);
 		terminal.write("[f] for " + abilities[0], 2, y++);
-		terminal.write("[d] for " + abilities[1], 2, y++);
-		terminal.write("[s] for " + abilities[2], 2, y++);
+		if(player.z >= 1) {
+			terminal.write("[d] for " + abilities[1], 2, y++);
+		}
+		if(player.z >= 2) {
+			terminal.write("[s] for " + abilities[2], 2, y++);
+		}
 		if(abilities[3] != null) {
 			terminal.write("[a] for your hereditary " + abilities[3], 2, y++);
 		}

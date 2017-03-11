@@ -96,7 +96,6 @@ public class FireballScreen implements Screen {
 		for(int X = -1; X <= 1; X++) {
 			for(int Y = -1; Y <= 1; Y++) {
 				Creature c = world.creature(x + X, y + Y, player.z);
-				System.out.printf("Test %d %d\n", X, Y);
 				if(c != null) {
 					if(player.canSee(x + X, y + Y, player.z)) {
 						player.commonAttack(c, player.attackValue(), "watch the %s burn for %d damage", c.name());
