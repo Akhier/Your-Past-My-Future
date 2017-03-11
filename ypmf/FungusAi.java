@@ -10,6 +10,7 @@ public class FungusAi extends CreatureAi {
 	}
 
 	public void onUpdate(){
+		if (spreadcount < 5 && MapGen.rng.nextInt(100) <= 1) {
 			spread();
 		}
 	}
