@@ -1,6 +1,8 @@
 package ypmf;
 
 import java.awt.Color;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,6 +67,8 @@ public class Creature {
 
 	private int playerClass;
 	public int pClass() { return playerClass; }
+
+	public int previousClass;
 	
 	public Creature(World world, char glyph, Color color, String name, int maxHp, int attack, int defense, int mana){
 		this.world = world;
@@ -111,6 +115,9 @@ public class Creature {
 					for(int ly = 0; ly < world.height(); ly++) {
 						boolean done = false;
 						if(world.tile(lx, ly, gz) == Tile.STAIRS_UP) {
+							try(PrintWriter writer = new PrintWriter("prevclass", "UTF-8")){
+							    writer.println(pClass() + z * 3);
+							} catch (IOException e) { }
 							gx = lx;
 							gy = ly;
 							done = true;

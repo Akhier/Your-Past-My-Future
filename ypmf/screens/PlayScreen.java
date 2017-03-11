@@ -2,8 +2,13 @@ package ypmf.screens;
 
 import java.awt.Color;
 import java.awt.event.KeyEvent;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
+
 import asciiPanel.AsciiPanel;
 import ypmf.Creature;
 import ypmf.MapGen;
@@ -32,6 +37,18 @@ public class PlayScreen implements Screen {
 
 	private void createCreatures(StuffFactory factory, int playerclass) {
 		player = factory.newPlayer(messages, fov, playerclass);
+		int prevclass = -1;
+		try(Scanner sc = new Scanner(new FileReader("prevclass"))) {
+			prevclass = sc.nextInt();
+		} catch (IOException e) { }
+		try(PrintWriter writer = new PrintWriter("prevclass", "UTF-8")){
+			if((playerclass == 0 && (prevclass == 0 || prevclass == 3 || prevclass == 6) || (playerclass == 1 && (prevclass == 1 || prevclass == 4 || prevclass == 7)) || (playerclass == 2 && (prevclass == 2 || prevclass == 5 || prevclass == 8)))) {
+				player.previousClass = -1;
+			} else {
+				player.previousClass = prevclass;
+				writer.println(playerclass);
+			}
+		} catch (IOException e) { }
 		for(int z = 0; z < world.depth(); z++) {
 			for(int i = 0; i < 4; i++) {
 				factory.newFungus(z);
@@ -129,19 +146,27 @@ public class PlayScreen implements Screen {
 				subscreen = new LookScreen(player, "Looking", player.x - getScrollX(), player.y - getScrollY());
 				break;
 			case KeyEvent.VK_F:
-				if(player.mana() >= 1) {
-					switch(player.pClass()) {
-					case(0):
+				switch(player.pClass()) {
+				case(0):
+					if (player.mana() >= 1) {
 						subscreen = new LungeScreen(player);
-						break;
-					case(1):
-						subscreen = new PhaseStrikeScreen(player, world);
-						break;
-					case(2):
-						subscreen = new SparkScreen(player, player.x - getScrollX(), player.y - getScrollY());
+					} else {
+						player.doAction("need more mana");
 					}
-				} else {
-					player.doAction("need more mana");
+					break;
+				case(1):
+					if (player.mana() >= 1) {
+						subscreen = new PhaseStrikeScreen(player, world);
+					} else {
+						player.doAction("need more mana");
+					}
+					break;
+				case(2):
+					if (player.mana() >= 1) {
+						subscreen = new SparkScreen(player, player.x - getScrollX(), player.y - getScrollY());
+					} else {
+						player.doAction("need more mana");
+					}
 				}
 				break;
 			case KeyEvent.VK_D:
@@ -172,7 +197,7 @@ public class PlayScreen implements Screen {
 				}
 				break;
 			case KeyEvent.VK_S:
-				if(player.z >= 0) {
+				if(player.z >= 2) {
 					switch(player.pClass()) {
 					case(0):
 						if(player.mana() >= 12) {
@@ -182,6 +207,11 @@ public class PlayScreen implements Screen {
 						}
 						break;
 					case(1):
+						if(player.mana() >= 13) {
+						subscreen = new TigerArrogantlySlaughters(player, world);
+						} else {
+							player.doAction("need 13 mana for the Tiger Arrogantly Slaughters");
+						}
 						break;
 					case(2):
 						if(player.mana() >= 16) {
@@ -194,6 +224,70 @@ public class PlayScreen implements Screen {
 				}
 				break;
 			case KeyEvent.VK_A:
+				switch(player.previousClass) {
+				case(0):
+					if (player.mana() >= 1) {
+						subscreen = new LungeScreen(player);
+					} else {
+						player.doAction("need more mana");
+					}
+					break;
+				case(1):
+					if (player.mana() >= 1) {
+						subscreen = new PhaseStrikeScreen(player, world);
+					} else {
+						player.doAction("need more mana");
+					}
+					break;
+				case(2):
+					if (player.mana() >= 1) {
+						subscreen = new SparkScreen(player, player.x - getScrollX(), player.y - getScrollY());
+					} else {
+						player.doAction("need more mana");
+					}
+				case(3):
+					if(player.mana() >= 4) {
+						subscreen = new WideSwipeScreen(player);
+					} else {
+						player.doAction("need 4 mana to wide swipe");
+					}
+					break;
+				case(4):
+					if(player.mana() >= 6) {
+						subscreen = new DeadlyStrikeScreen(player);
+					} else {
+						player.doAction("need 6 mana to do a deadly strike");
+					}
+					break;
+				case(5):
+					if(player.mana() >= 3) {
+						subscreen = new FireballScreen(player, world, player.x - getScrollX(), player.y - getScrollY());
+					} else {
+						player.doAction("need 3 mana for a fireball");
+					}
+					break;
+				case(6):
+					if(player.mana() >= 12) {
+						subscreen = new DragonRampagesScreen(player, world);
+					} else {
+						player.doAction("need 12 mana to unleash Dragon Rampages");
+					}
+					break;
+				case(7):
+					if(player.mana() >= 13) {
+					subscreen = new TigerArrogantlySlaughters(player, world);
+					} else {
+						player.doAction("need 13 mana for the Tiger Arrogantly Slaughters");
+					}
+					break;
+				case(8):
+					if(player.mana() >= 16) {
+						subscreen = new PheonixBurstBeamScreen(player, world);
+					} else {
+						player.doAction("need 16 mana for Pheonix Burst Beam");
+					}
+					break;
+				}
 				break;
 			}
 			
