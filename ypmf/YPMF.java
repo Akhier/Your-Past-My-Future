@@ -8,7 +8,7 @@ import ypmf.screens.Screen;
 import ypmf.screens.StartScreen;
 /**
  * @author Akhier Dragonheart
- * @version 0.5
+ * @version 1.0
  */
 public class YPMF extends JFrame implements KeyListener{
 	private static final long serialVersionUID = 23015753830142527L;
